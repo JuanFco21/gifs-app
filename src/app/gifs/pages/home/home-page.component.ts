@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { GifsService } from '../../services/gifs.service';
 
 @Component({
   selector: 'gifs-home-page',
   templateUrl: './home-page.component.html'
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent {
 
-  constructor() { }
+  constructor(private gifsService: GifsService) { }
 
-  ngOnInit() {
+  get gifs() {
+    return this.gifsService.gifList;
   }
 
 }
