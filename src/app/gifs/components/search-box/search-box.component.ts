@@ -19,7 +19,6 @@ export class SearchBoxComponent {
 
     constructor(private gifsService: GifsService) { }
 
-    // searchTag(newTag: string) {
     searchTag() {
         const newTag = this.tagInput.nativeElement.value;
 

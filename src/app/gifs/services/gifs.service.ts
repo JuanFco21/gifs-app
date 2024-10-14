@@ -13,11 +13,25 @@ export class GifsService {
 
     constructor(private http: HttpClient) {
         this.loadLocalStorage();
-        //console.log('Gifs Service Ready');
     }
 
     get tagsHistory() {
         return [...this._tagsHistory];
+    }
+
+    searchTag(tag: string): void {
+        if (tag.length === 0) return;
+        this.organizeHistory(tag);
+
+        const params = new HttpParams()
+            .set('api_key', this.apiKey)
+            .set('limit', 9)
+            .set('q', tag)
+
+        this.http.get<SearchResponse>(`${this.serviceUrl}/search`, { params })
+            .subscribe(resp => {
+                this.gifList = resp.data;
+            });
     }
 
     private organizeHistory(tag: string) {
@@ -42,20 +56,5 @@ export class GifsService {
         this._tagsHistory = JSON.parse(localStorage.getItem('history')!);
         if (this._tagsHistory.length === 0) return;
         this.searchTag(this._tagsHistory[0]);
-    }
-
-    searchTag(tag: string): void {
-        if (tag.length === 0) return;
-        this.organizeHistory(tag);
-
-        const params = new HttpParams()
-            .set('api_key', this.apiKey)
-            .set('limit', 9)
-            .set('q', tag)
-
-        this.http.get<SearchResponse>(`${this.serviceUrl}/search`, { params })
-            .subscribe(resp => {
-                this.gifList = resp.data;
-            });
     }
 }
